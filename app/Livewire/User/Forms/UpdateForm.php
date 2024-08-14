@@ -22,11 +22,11 @@ class UpdateForm extends Form
         ];
     }
 
-    public function update(int $id): void
+    public function update(User $user): void
     {
         $data = $this->getValidData(asObj: false);
-        DB::transaction(function () use ($data, $id) {
-            User::findOrFail($id)->update($data);
+        DB::transaction(function () use ($data, $user) {
+            $user->update($data);
         });
         $this->clearForm();
 

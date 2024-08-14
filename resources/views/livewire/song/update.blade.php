@@ -62,7 +62,7 @@
             <div class="flex justify-end">
                 <button type="submit"
                     class="px-4 py-2 text-white bg-indigo-600 rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Atualizar Música
+                    Salvar
                 </button>
             </div>
         </form>

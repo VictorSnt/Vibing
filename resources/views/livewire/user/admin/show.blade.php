@@ -22,17 +22,26 @@
                     <thead class="text-white bg-gray-800">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Nome</th>
+                                Nome
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Email</th>
+                                Email
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Admin</th>
+                                Admin
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Cadstrado em</th>
+                                Editar
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Mudar permissões</th>
+                                Cadstrado em
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Desativar</th>
+                                Mudar permissões
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
+                                Desativar
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -42,12 +51,18 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->is_admin ? 'Sim' : 'Não' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <button
+                                        x-on:click="$dispatch('open-modal', {modalId: 'update::user::modal', updateUserId: '{{ $user->id }}' })"
+                                        class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-slate-600 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
+                                        Editar
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     {{ $user->created_at->translatedFormat('d \d\e F \d\e Y') }}</td>
                                 </td>
-                                <td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <x-user.admin-toggle-button userId="{{ $user->id }}"
                                         is_admin="{{ $user->is_admin }}" />
-
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap">

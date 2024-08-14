@@ -2,10 +2,12 @@
 
 namespace App\Livewire\User\Admin;
 
+use App\Livewire\User\Forms\UpdateForm;
 use App\Models\User;
 use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -13,6 +15,7 @@ class Update extends Component
 {
     use NotificationTrait;
 
+    
     protected function verifyAuthorization(): void
     {
         if (!Auth::user() || !Auth::user()->is_admin) {
@@ -47,8 +50,9 @@ class Update extends Component
     }
 
     #[On('admin::toggle::confirmed')]
-    public function toggleAdmin($userId)
+    public function toggleAdmin($userId = null)
     {
+        if (!$userId) return;
         try {
             $this->verifyAuthorization();
             $is_admin = DB::transaction(function () use ($userId) {

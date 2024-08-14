@@ -3,39 +3,50 @@
 namespace App\Livewire\User;
 
 use Illuminate\Validation\ValidationException;
-use App\Livewire\User\Forms\PasswordForm;
+
 use App\Livewire\User\Forms\UpdateForm;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\NotificationTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Models\User;
 
 
 class Update extends Component
 {
     use NotificationTrait;
-
-
+    
     public UpdateForm $updateForm;
-    public PasswordForm $passwordForm;
-    public $userId;
-
+    public $user;
+    
 
     public function mount()
     {
-        $user = Auth::user();
-        $this->userId = $user->id;
-        $this->updateForm->name = $user->name;
+        $this->user = Auth::user();
+        $this->updateForm->name = $this->user->name;
+    }
+
+    #[On('open-modal')]
+    public function setUserData($updateUserId = null)
+    {
+        if (!$updateUserId) return; 
+        $this->user = User::findOrFail($updateUserId);
+        $this->updateForm->name = $this->user->name;
     }
 
     public function success($msg)
     {
-        $this->clearForm();
         $this->alert([
             'icon' => 'success',
             'title' => $msg,
         ]);
+        if (Auth::user()->is_admin) {
+            $this->dispatch('close-modal');
+            $this->dispatch('re-render::admin::userslist::view');
+            return;
+        }
         $this->dispatch('user::updated');
+
     }
 
     public function fail($msg)
@@ -66,12 +77,13 @@ class Update extends Component
     public function update()
     {
         try {
-            $this->updateForm->update($this->userId);
+            $this->updateForm->update($this->user);
             $this->success(msg: __('local.Success'));
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
             report($e);
+            dd($e);
             $this->fail(msg: __('local.RegistrationFailed'));
         }
     }
