@@ -34,12 +34,12 @@ class Register extends Component
     }
 
     #[On('open-modal')]
-    public function setFields($albumArtistId = null)
+    public function setFields($createAlbumArtistId = null)
     {
-        if ($albumArtistId) {
+        if ($createAlbumArtistId) {
             try {
-                $this->artist = Artist::findOrFail($albumArtistId);
-                $this->artist_id = $albumArtistId;
+                $this->artist = Artist::findOrFail($createAlbumArtistId);
+                $this->artist_id = $createAlbumArtistId;
             } catch (Exception $e) {
                 report($e);
                 $this->alert([

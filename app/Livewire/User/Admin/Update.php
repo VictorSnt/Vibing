@@ -29,14 +29,11 @@ class Update extends Component
 
     public function success($msg)
     {
-        $this->alert(
-            [
+        $this->notify([
                 'icon' => 'success',
                 'title' => $msg,
-            ]
-        );
-        $this->dispatch('re-render::admin::userslist::view');
-        $this->dispatch('close-modal');
+        ], nextPage: true);
+        redirect()->route('listusers-index');
     }
 
 

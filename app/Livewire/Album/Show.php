@@ -12,6 +12,7 @@ class Show extends Component
     use WithPagination;
 
     public $search;
+    public $artistId;
 
     /**
      * Reload Page to avoid pagination error
@@ -24,14 +25,20 @@ class Show extends Component
 
     public function getAlbum()
     {
+        $query = Album::query();
+
+        if (isset($this->artistId) && $this->artistId) {
+            $query->where('artist_id', $this->artistId);
+        }
+
         if ($this->search) {
             $this->setPage(1);
-            return Album::search($this->search)->paginate(3);
-        } else {
-            return Album::orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
+            $query->search($this->search);
         }
+
+        return $query->orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
     }
-    
+
     public function render()
     {
         $albums = $this->getAlbum();

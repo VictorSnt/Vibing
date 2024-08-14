@@ -55,11 +55,17 @@ Route::middleware([CheckAdmin::class])->group(function () {
 
     Route::view(uri: '/listagem-usuarios', view: 'pages.user.users-listage')->name('listusers-index');
     
-    Route::view(uri: '/dashboard-musics', view: 'pages.song.index')->name('song-index');
-    
     Route::view(uri: '/dashboard-artistas', view: 'pages.artist.index')->name('artist-index');
 
-    Route::view(uri: '/dashboard-album', view: 'pages.album.index')->name('album-index');
+    Route::get('/dashboard-album/{artistId?}', function ($artistId = null) {
+        return view('pages.album.index', ['artistId' => $artistId]);
+    })->name('album-index');
+    // Route::view(uri: '/dashboard-album', view: 'pages.album.index')->name('album-index');
+    
+    Route::get('/dashboard-musics/{albumId?}', function ($albumId = null) {
+        return view('pages.album.index', ['albumId' => $albumId]);
+    })->name('song-index');
+    //Route::view(uri: '/dashboard-musics', view: 'pages.song.index')->name('song-index');
 
 });
 

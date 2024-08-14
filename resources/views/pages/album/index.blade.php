@@ -1,8 +1,6 @@
 <x-layout.app>
-    <livewire:album.show />
+    <livewire:album.show :artistId="$artistId" />
 
-
-    
     <!-- Modal -->
     <x-modal.primary title="Criar Album" modalId="create::artist::album">
         <livewire:album.register />
