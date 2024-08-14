@@ -11,8 +11,7 @@
             </div>
             <input wire:key="search" wire:model.live.debounce.500ms="search" type="search" id="users-search"
                 class="block w-full p-4 my-2 text-sm text-gray-900 border rounded-lg border-slate-600 ps-10 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Pesquisar Usuarios" required 
-            />
+                placeholder="Pesquisar Usuarios" required />
         </div>
 
         <div class="flex flex-col h-3/4">
@@ -45,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($users as $user)
+                        @forelse ($users as $user)
                             <tr wire:key="{{ $user->id }}">
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
@@ -70,32 +69,38 @@
                                 </td>
 
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <!-- Botão Novo User -->
-                <div class="flex items-center justify-between mt-4">
-                    <button x-on:click="$dispatch('open-modal', {modalId: 'register::user::modal' })" type="button"
-                        class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        + Novo Usuario
-                    </button>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                        Nenhum usuario encontrado
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <!-- Botão Novo User -->
+                    <div class="flex items-center justify-between mt-4">
+                        <button x-on:click="$dispatch('open-modal', {modalId: 'register::user::modal' })" type="button"
+                            class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            + Novo Usuario
+                        </button>
+                    </div>
+
+                    <!-- Modal -->
+                    <livewire:user.admin.delete />
+                    <livewire:user.admin.update />
+                    <x-modal.primary title="Editar permissões" modalId="update::artist::modal">
+
+                    </x-modal.primary>
                 </div>
 
-                <!-- Modal -->
-                <livewire:user.admin.delete />
-                <livewire:user.admin.update />
-                <x-modal.primary title="Editar permissões" modalId="update::artist::modal">
-
-                </x-modal.primary>
             </div>
 
+            <!-- Paginação -->
+            <div class="mt-4">
+                {{ $users->links('vendor.pagination.app-pagination') }}
+            </div>
         </div>
-
-        <!-- Paginação -->
-        <div class="mt-4">
-            {{ $users->links('vendor.pagination.app-pagination')  }}
         </div>
-    </div>
-    </div>
-    </div>
-</main>
+        </div>
+    </main>

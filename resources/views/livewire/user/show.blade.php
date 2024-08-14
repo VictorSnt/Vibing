@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr wire:key="{{ $user->id }}">
                         <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
@@ -23,7 +23,13 @@
                             <button class="text-red-500 transition hover:text-red-600">Excluir</button>
                         </td> --}}
                     </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="3" class="px-6 py-4 text-center text-gray-500">
+                        Nenhum usuario encontrado
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

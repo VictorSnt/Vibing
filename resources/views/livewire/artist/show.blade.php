@@ -21,67 +21,86 @@
                     <thead class="text-white bg-gray-800">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Imagem</th>
+                                Imagem
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Cantor</th>
+                                Cantor
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Novo Album</th>
+                                Novo Album
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Editar</th>
+                                Albums
+                            </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Detelar</th>
+                                Editar
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
+                                Detelar
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($artists as $artist)
+                        @forelse ($artists as $artist)
                             <tr wire:key="{{ $artist->id . $artist->created_at }}">
                                 @if ($artist->image)
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 align-middle whitespace-nowrap">
                                         <img src="{{ asset('storage/' . $artist->image) }}" alt="Artist Image"
                                             class="object-cover w-12 h-12 rounded-xl">
                                     </td>
                                 @else
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <svg class="w-12 h-12 text-gray-500 rounded-xl" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                    <td class="px-6 py-4 align-middle whitespace-nowrap">
+                                        <svg class="w-12 h-12 text-gray-500 rounded-xl" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11.5a3.5 3.5 0 10-7 0 3.5 3.5 0 007 0zM12 14.5a5.5 5.5 0 00-5.5 5.5h11A5.5 5.5 0 0012 14.5z">
-                                            </path>
+                                                d="M15 11.5a3.5 3.5 0 10-7 0 3.5 3.5 0 007 0zM12 14.5a5.5 5.5 0 00-5.5 5.5h11A5.5 5.5 0 0012 14.5z"></path>
                                         </svg>
                                     </td>
                                 @endif
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $artist->name }}</td>
-
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <button
-                                        x-on:click="$dispatch('open-modal', {modalId: 'create::artist::album::modal', createAlbumArtistId: '{{ $artist->id }}' })"
-                                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                        Novo album
-                                    </button>
+                                <td class="px-6 py-4 align-middle whitespace-nowrap">{{ $artist->name }}</td>
+                    
+                                <td class="px-6 py-4 align-middle whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <button
+                                            x-on:click="$dispatch('open-modal', {modalId: 'create::artist::album::modal', createAlbumArtistId: '{{ $artist->id }}' })"
+                                            class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                            Novo álbum
+                                        </button>
+                                    </div>
                                 </td>
-                                
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('album-index',  $artist->id) }}"
-                                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                        Albums
-                                    </a>
-                                </td>       
-
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <button
-                                        x-on:click="$dispatch('open-modal', {modalId: 'update::artist::modal', artistId: '{{ $artist->id }}' })"
-                                        class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-slate-600 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
-                                        Editar
-                                    </button>
+                    
+                                <td class="px-6 py-4 align-middle whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <a href="{{ route('album-index', $artist->id) }}"
+                                            class="text-white bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                            Álbuns
+                                        </a>
+                                    </div>
                                 </td>
-
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-artist.delete-artist-button artistId="{{ $artist->id }}" />
+                    
+                                <td class="px-6 py-4 align-middle whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <button
+                                            x-on:click="$dispatch('open-modal', {modalId: 'update::artist::modal', artistId: '{{ $artist->id }}' })"
+                                            class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-slate-600 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
+                                            Editar
+                                        </button>
+                                    </div>
+                                </td>
+                    
+                                <td class="px-6 py-4 align-middle whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <x-artist.delete-artist-button artistId="{{ $artist->id }}" />
+                                    </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">Nenhum Artista encontrado.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
+                    
                 </table>
                 <!-- Botão Novo Artista -->
                 <div class="flex items-center justify-between mt-4">

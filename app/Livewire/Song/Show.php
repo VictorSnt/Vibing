@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Song;
 
+use App\Models\Album;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -13,6 +14,17 @@ class Show extends Component
     use WithPagination;
 
     public $search;
+    public $albumId;
+    public $album;
+
+    public function mount($albumId = null)
+    {
+        if($albumId) {
+            $this->album = Album::findOrFail($albumId);
+            $this->albumId = $albumId;
+        }
+    }
+
 
     /**
      * Reload Page to avoid pagination error
@@ -25,12 +37,19 @@ class Show extends Component
 
     public function getSong()
     {
+        $query = Song::query();
+
+        if (isset($this->albumId) && $this->albumId) {
+            $query->where('album_id', $this->albumId);
+        }
+        
         if ($this->search) {
             $this->setPage(1);
-            return Song::search($this->search)->paginate(3);
-        } else {
-            return Song::orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
+            $query->search($this->search);
         }
+        
+        return $query->orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
+        
     }
 
     public function render()

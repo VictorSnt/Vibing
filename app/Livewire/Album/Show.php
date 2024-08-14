@@ -3,6 +3,7 @@
 namespace App\Livewire\Album;
 
 use App\Models\Album;
+use App\Models\Artist;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,6 +14,16 @@ class Show extends Component
 
     public $search;
     public $artistId;
+    public $artist;
+
+
+    public function mount($artistId = null)
+    {
+        if($artistId) {
+            $this->artist = Artist::findOrFail($artistId);
+            $this->artistId = $artistId;
+        }
+    }
 
     /**
      * Reload Page to avoid pagination error
@@ -27,8 +38,8 @@ class Show extends Component
     {
         $query = Album::query();
 
-        if (isset($this->artistId) && $this->artistId) {
-            $query->where('artist_id', $this->artistId);
+        if (isset($artistId) && $artistId) {
+            $query->where('artist_id', $artistId);
         }
 
         if ($this->search) {

@@ -11,7 +11,13 @@
             </div>
             <input wire:key="search" wire:model.live.debounce.500ms="search" type="search" id="songs-search"
                 class="block w-full p-4 my-2 text-sm text-gray-900 border rounded-lg border-slate-600 ps-10 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Pesquisar Musicas" required />
+                @if (isset($album))
+                    placeholder="Pesquisar Musica no Album {{ $album->name }}"
+                    @else
+                placeholder="Pesquisar Musicas"
+                @endif
+                
+            /> 
         </div>
 
         <div class="flex flex-col h-3/4">
@@ -35,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($songs as $song)
+                        @forelse ($songs as $song)
                             <tr wire:key="{{ $song->id . $song->created_at }}">
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $song->title }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $song->album->name }}</td>
@@ -62,16 +68,25 @@
                                     <x-song.delete-song-button songId="{{ $song->id }}" />
                                 </td>
                             </tr>
-                            
-                        @endforeach
+                        @empty 
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                    Nenhuma musica do album @if (isset($album)) {{ $album->name }} @endif encontrada.
+                                </td>
+                            </tr>   
+                        @endforelse
                     </tbody>
                 </table>
 
-                <!-- Botão Novo Album -->
+                <!-- Botão Nova Musica -->
                 <div class="flex items-center justify-between mt-4">
-                    <button x-on:click="$dispatch('open-modal', {modalId: 'create::song' })" type="button"
+                    <button x-on:click="$dispatch('open-modal', {modalId: 'create::song' @if (isset($album)), albumId: '{{ $albumId }}'@endif  })" type="button"
                         class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        @if (isset($album))
+                        + Musica no album {{$album->name}}
+                        @else
                         + Nova Musica
+                        @endif
                     </button>
                 </div>
 

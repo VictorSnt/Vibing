@@ -1,6 +1,6 @@
 <x-layout.app>
 
-    <livewire:song.show />
+    <livewire:song.show :albumId="$albumId"/>
 
     <!-- Modal -->
     <x-modal.primary title="Registrar Musica" modalId="create::song">
