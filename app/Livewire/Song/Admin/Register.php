@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Song;
+namespace App\Livewire\Song\Admin;
 
 use App\Exceptions\RowAlreadyExistsException;
 use Illuminate\Validation\ValidationException;
@@ -66,7 +66,7 @@ class Register extends Component
             'icon' => 'success',
             'title' => $msg,
         ]);
-        $this->dispatch('re-render::song::view');
+        $this->dispatch('re-render::admin::song::view');
         $this->dispatch('close-modal');
     }
 
@@ -102,6 +102,6 @@ class Register extends Component
 
     public function render()
     {
-        return view('livewire.song.register');
+        return view('livewire.song.admin.register');
     }
 }

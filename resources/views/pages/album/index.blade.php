@@ -13,7 +13,7 @@
 
 
     <x-modal.primary title="Musica Album" modalId="album::create::song::modal">
-        <livewire:song.register />
+        <livewire:song.admin.register />
     </x-modal.primary>
 
     {{-- Componentes --}}

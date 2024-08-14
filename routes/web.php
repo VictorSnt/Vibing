@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
         }
     )->name('logout');
 
-    Route::view(uri: '/dashboard-usuario', view: 'pages.user.index')->name('user-index');
+    Route::view(uri: '/', view: 'pages.vibing.home')->name('vibing-index');
 
     Route::view(uri: '/atualizar-perfil', view: 'pages.user.update')->name('profile-update');
 
@@ -71,5 +71,5 @@ Route::middleware([CheckAdmin::class])->group(function () {
 
 
 Route::fallback(function () {
-    return redirect()->route('user-index');
+    return redirect()->route('vibing-index');
 });

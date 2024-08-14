@@ -1,101 +1,143 @@
-<main class="w-full min-h-[90vh] align-middle overflow-hidden">
-    <div class="object-center w-1/2 m-auto rounded-lg h-[80vh] mt-8">
-        <label for="songs-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-        <div class="relative w-1/2 m-auto">
-            <div class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
+<div>
+    <div class="justify-start">
+        <h1 class="text-4xl font-semibold text-white-900 dark:text-white">Musicas</h1>
+    </div>
+    <div class="flex items-center justify-center p-4 bg-gray-800 max-h-screen-md">
+        <div class="relative w-full max-w-screen-lg">
+            <!-- Carousel Container -->
+            <div class="relative flex overflow-hidden snap-x snap-mandatory" id="song-carousel">
+                @forelse ($songs as $song)
+                    <div
+                        class="flex-shrink-0 px-6 py-4 mx-4 text-white transition-transform duration-300 ease-in-out transform min-w-[80%] md:min-w-[45%] lg:min-w-[30%] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl snap-start hover:scale-105">
+                        <div class="flex items-center mb-4">
+                            @if ($song->artist->image)
+                                <img src="{{ asset('storage/' . $song->artist->image) }}"
+                                    class="object-cover w-24 h-24 rounded-full">
+                            @else
+                                <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11.5a3.5 3.5 0 10-7 0 3.5 3.5 0 007 0zM12 14.5a5.5 5.5 0 00-5.5 5.5h11A5.5 5.5 0 0012 14.5z">
+                                    </path>
+                                </svg>
+                            @endif
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold">{{ $song->title }}</h3>
+                                <p class="text-sm">Artista: {{ $song->artist->name }}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300">Álbum: {{ $song->album->name }}</p>
+                        <p class="text-sm text-gray-300">Duração: {{ number_format($song->duration / 60, 2) }} minutos
+                        </p>
+
+                        <!-- Heart Icon for Likes -->
+                        <button id="like-button-{{ $song->id }}"
+                            class="mt-4 text-white hover:text-red-500 focus:outline-none"
+                            onclick="toggleLike({{ $song->id }})">
+                            <div class="flex items-center">
+                                <svg id="like-icon-{{ $song->id }}" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                </svg>
+                                <span class="ml-2">{{ $song->likes->count() }}</span>
+                            </div>
+                        </button>
+                    </div>
+                @empty
+                    <p class="text-white">Nenhuma música disponível</p>
+                @endforelse
             </div>
-            <input wire:key="search" wire:model.live.debounce.500ms="search" type="search" id="songs-search"
-                class="block w-full p-4 my-2 text-sm text-gray-900 border rounded-lg border-slate-600 ps-10 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                @if (isset($album))
-                    placeholder="Pesquisar Musica no Album {{ $album->name }}"
-                    @else
-                placeholder="Pesquisar Musicas"
-                @endif
-                
-            /> 
-        </div>
 
-        <div class="flex flex-col h-3/4">
-            <!-- Tabela -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 rounded shadow-md">
-                    <thead class="text-white bg-gray-800">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Musica</th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Album</th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Cantor</th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Duração</th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Editar</th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Excluir</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse ($songs as $song)
-                            <tr wire:key="{{ $song->id . $song->created_at }}">
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $song->title }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $song->album->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <span class="mr-2">{{ $song->artist->name }}</span>
-                                        @if ($song->artist->image)
-                                            <img src="{{ asset('storage/' . $song->artist->image) }}"
-                                                class="object-cover w-10 h-10 rounded-xl">
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ $song->duration / 60 }} Minutos
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <button
-                                        x-on:click="$dispatch('open-modal', {modalId: 'update::song::modal', songId: '{{ $song->id }}' })"
-                                        class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-slate-600 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
-                                        Editar
-                                    </button>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-song.delete-song-button songId="{{ $song->id }}" />
-                                </td>
-                            </tr>
-                        @empty 
-                            <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                    Nenhuma musica do album @if (isset($album)) {{ $album->name }} @endif encontrada.
-                                </td>
-                            </tr>   
-                        @endforelse
-                    </tbody>
-                </table>
+            <!-- Navigation Buttons -->
+            <div class="absolute left-0 transform -translate-y-1/2 top-1/2">
+                <button id="prevBtn"
+                    class="p-2 text-white bg-gray-700 rounded-full hover:bg-gray-800 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+            <div class="absolute right-0 transform -translate-y-1/2 top-1/2">
+                <button id="nextBtn"
+                    class="p-2 text-white bg-gray-700 rounded-full hover:bg-gray-800 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
 
-                <!-- Botão Nova Musica -->
-                <div class="flex items-center justify-between mt-4">
-                    <button x-on:click="$dispatch('open-modal', {modalId: 'create::song' @if (isset($album)), albumId: '{{ $albumId }}'@endif  })" type="button"
-                        class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        @if (isset($album))
-                        + Musica no album {{$album->name}}
-                        @else
-                        + Nova Musica
-                        @endif
+            <!-- View More Button -->
+            @if ($songs->hasMorePages())
+                <div class="flex justify-end mt-4">
+                    <button wire:click="loadMore"
+                        class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
+                        Ver Mais
                     </button>
                 </div>
-
-            </div>
-        </div>
-
-        <!-- Paginação -->
-        <div class="mt-4">
-            {{ $songs->links('vendor.pagination.app-pagination') }}
+            @endif
         </div>
     </div>
-</main>
+
+    <script>
+        const carousel = document.getElementById('song-carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({
+                left: -carousel.offsetWidth,
+                behavior: 'smooth'
+            });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({
+                left: carousel.offsetWidth,
+                behavior: 'smooth'
+            });
+        });
+
+        function toggleLike(songId) {
+            const icon = document.getElementById(`like-icon-${songId}`);
+            const isLiked = icon.getAttribute('fill') === 'currentColor';
+            icon.setAttribute('fill', isLiked ? 'none' : 'currentColor');
+            Livewire.dispatch('song::liked', {
+                songId
+            });
+        }
+    </script>
+
+    <style>
+        /* Carousel container styling */
+        #song-carousel {
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            display: flex;
+            scrollbar-width: none;
+        }
+
+        #song-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Navigation button styling */
+        #prevBtn,
+        #nextBtn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #prevBtn {
+            left: 10px;
+        }
+
+        #nextBtn {
+            right: 10px;
+        }
+    </style>
+</div>

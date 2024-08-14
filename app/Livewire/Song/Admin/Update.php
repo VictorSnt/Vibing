@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Livewire\Song;
+namespace App\Livewire\Song\Admin;
+
 
 use Illuminate\Validation\ValidationException;
 use App\Traits\HandlesUniqueConstraint;
@@ -57,7 +58,7 @@ class Update extends Component
             'icon' => 'success',
             'title' => $msg,
         ]);
-        $this->dispatch('re-render::song::view');
+        $this->dispatch('re-render::admin::song::view');
         $this->dispatch('close-modal');
     }
 
@@ -91,6 +92,6 @@ class Update extends Component
     
     public function render()
     {
-        return view('livewire.song.update');
+        return view('livewire.song.admin.update');
     }
 }

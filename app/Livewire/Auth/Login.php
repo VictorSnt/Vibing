@@ -25,7 +25,7 @@ class Login extends Component
                 redirect()->route('listusers-index');
                 return;
             }
-            redirect()->route('user-index');
+            redirect()->route('vibing-index');
         }else{
             $this->alert([
                 'icon' => 'error',

@@ -24,6 +24,11 @@ class Song extends BaseModel
         return $this->belongsTo(Album::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function playlists()
     {
         return $this->belongsToMany(Playlist::class, 'playlist_song')->withTimestamps();

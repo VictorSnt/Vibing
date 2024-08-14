@@ -21,6 +21,6 @@ class CheckAdmin
             return $next($request);
         }
 
-        return redirect()->route('user-index');
+        return redirect()->route('vibing-index');
     }
 }

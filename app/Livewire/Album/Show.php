@@ -19,6 +19,7 @@ class Show extends Component
 
     public function mount($artistId = null)
     {
+        
         if($artistId) {
             $this->artist = Artist::findOrFail($artistId);
             $this->artistId = $artistId;
@@ -38,15 +39,15 @@ class Show extends Component
     {
         $query = Album::query();
 
-        if (isset($artistId) && $artistId) {
-            $query->where('artist_id', $artistId);
+        if (isset($this->artistId) && $this->artistId) {
+            $query->where('artist_id', $this->artistId);
         }
 
         if ($this->search) {
             $this->setPage(1);
             $query->search($this->search);
         }
-
+        
         return $query->orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
     }
 

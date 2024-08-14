@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Livewire\Song;
+namespace App\Livewire\Song\Admin;
+
 
 use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class Delete extends Component
                 'title' => $msg,
             ]
         );
-        $this->dispatch('re-render::song::view');
+        $this->dispatch('re-render::admin::song::view');
         $this->dispatch('close-modal');
     }
 
@@ -59,6 +60,6 @@ class Delete extends Component
     
     public function render()
     {
-        return view('livewire.song.delete');
+        return view('livewire.song.admin.delete');
     }
 }

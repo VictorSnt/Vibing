@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
-                    <x-nav-link href="{{ route('user-index') }}" wire:navigate>
+                    <x-nav-link href="{{ route('vibing-index') }}" wire:navigate>
                         <x-logo.application-mark class="block w-auto h-9" />
                     </x-nav-link>
                 </div>
@@ -14,7 +14,7 @@
                 @auth
                     @if (Auth::user()->is_admin)
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link wire:navigate href="{{ route('listusers-index') }}" :active="request()->routeIs('user-index')">
+                            <x-nav-link wire:navigate href="{{ route('listusers-index') }}" :active="request()->routeIs('vibing-index')">
                                 Usuarios
                             </x-nav-link>
                             <x-nav-link wire:navigate href="{{ route('artist-index') }}" :active="request()->routeIs('artist-index')">
@@ -29,7 +29,7 @@
                         </div>
                     @else
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <x-nav-link wire:navigate href="{{ route('user-index') }}" :active="request()->routeIs('user-index')">
+                            <x-nav-link wire:navigate href="{{ route('vibing-index') }}" :active="request()->routeIs('vibing-index')">
                                 Inicio
                             </x-nav-link>
                             <x-nav-link wire:navigate href="{{ route('playlist-index') }}" :active="request()->routeIs('playlist-index')">
@@ -127,7 +127,7 @@
         <!-- Responsive Navigation Menu -->
         <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link href="{{ route('user-index') }}" wire:navigate>
+                <x-responsive-nav-link href="{{ route('vibing-index') }}" wire:navigate>
                     {{ __('local.Dashboard') }}
                 </x-responsive-nav-link>
             </div>

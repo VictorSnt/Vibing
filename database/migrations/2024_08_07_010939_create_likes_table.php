@@ -9,11 +9,11 @@ class CreateLikesTable extends Migration
     public function up()
     {
         Schema::create('likes', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('song_id')->constrained()->onDelete('cascade');
-            $table->primary(['user_id', 'song_id']);
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
+            $table->foreignId('song_id')->constrained()->onDelete('restrict');
             $table->timestamps();
-            $table->softDeletes();
+            
         });
     }
 

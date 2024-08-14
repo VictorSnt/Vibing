@@ -4,15 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Like extends Pivot
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $table = 'likes';
+    protected $primaryKey = 'id';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
 
     protected $fillable = ['user_id', 'song_id'];
+
+    protected $table = 'likes';
 
     public function user()
     {

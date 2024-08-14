@@ -2,59 +2,58 @@
 
 namespace App\Livewire\Song;
 
-use App\Models\Album;
-use Livewire\WithPagination;
+use App\Models\Like;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Song;
+use App\Traits\NotificationTrait;
+use Illuminate\Support\Facades\Auth;
 
 class Show extends Component
 {
-
-    use WithPagination;
+    use NotificationTrait;
 
     public $search;
-    public $albumId;
-    public $album;
 
-    public function mount($albumId = null)
-    {
-        if($albumId) {
-            $this->album = Album::findOrFail($albumId);
-            $this->albumId = $albumId;
-        }
-    }
-
-
-    /**
-     * Reload Page to avoid pagination error
-     */
-    #[On('re-render::song::view')]
-    public function resetPage()
-    {
-        redirect()->route('song-index');
-    }
-
-    public function getSong()
+    public function getSongs()
     {
         $query = Song::query();
-
-        if (isset($this->albumId) && $this->albumId) {
-            $query->where('album_id', $this->albumId);
-        }
-        
         if ($this->search) {
-            $this->setPage(1);
             $query->search($this->search);
         }
         
-        return $query->orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
-        
+        return $query->paginate(6);
     }
 
+
+    #[On('song::liked')]
+    public function liked($songId)
+    {
+        $data = [
+            'song_id' => $songId,
+            'user_id' => Auth::user()->id
+        ];
+
+        $like = Like::where('song_id', $songId)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+
+        if ($like) {
+            $like->forceDelete();
+            $this->dispatch('re-render::song::view');
+            return;
+        }
+
+
+        Like::create($data);
+        $this->dispatch('re-render::song::view');
+    }
+
+
+    #[On('re-render::song::view')]
     public function render()
     {
-        $songs = $this->getSong();
+        $songs = $this->getSongs();
         return view('livewire.song.show', ['songs' => $songs]);
     }
 }
