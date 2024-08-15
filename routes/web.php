@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppVibingController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
         }
     )->name('logout');
 
-    Route::view(uri: '/', view: 'pages.vibing.home')->name('vibing-index');
+    Route::get('/', [AppVibingController::class, 'show'])->name('vibing-index');
 
     Route::view(uri: '/atualizar-perfil', view: 'pages.user.update')->name('profile-update');
 

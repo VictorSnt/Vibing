@@ -36,7 +36,7 @@
         @endif
 
         <!-- Page Content -->
-        <main class="flex items-center mt-14 h-[100hv]">
+        <main>
             <div wire:loading>
                 <x-load-animation />
             </div>

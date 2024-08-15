@@ -1,15 +1,15 @@
 <div>
-    <div class="justify-start">
-        <h1 class="text-4xl font-semibold text-white-900 dark:text-white">Musicas</h1>
+    <div class="justify-around">
+        <h1 class="text-4xl font-semibold text-white-900 dark:text-white">{{ $title }}</h1>
     </div>
-    <div class="flex items-center justify-center p-4 bg-gray-800 max-h-screen-md">
-        <div class="relative w-full max-w-screen-lg">
-            <!-- Carousel Container -->
-            <div class="relative flex overflow-hidden snap-x snap-mandatory" id="song-carousel">
-                @forelse ($songs as $song)
-                    <div
+    <div class="flex items-center justify-center p-4">
+        <div class="relative w-full max-w-screen-2xl">
+            <div class="relative flex overflow-hidden snap-x snap-mandatory" id="song-carousel-{{ $title }}">
+                @foreach ($songs as $song)
+                    <div wire:key="song-{{ $title }}-{{ $song->id }}"
                         class="flex-shrink-0 px-6 py-4 mx-4 text-white transition-transform duration-300 ease-in-out transform min-w-[80%] md:min-w-[45%] lg:min-w-[30%] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl snap-start hover:scale-105">
                         <div class="flex items-center mb-4">
+                            <!-- Image and Song Details -->
                             @if ($song->artist->image)
                                 <img src="{{ asset('storage/' . $song->artist->image) }}"
                                     class="object-cover w-24 h-24 rounded-full">
@@ -30,14 +30,14 @@
                         <p class="text-sm text-gray-300">Duração: {{ number_format($song->duration / 60, 2) }} minutos
                         </p>
 
-                        <!-- Heart Icon for Likes -->
-                        <button id="like-button-{{ $song->id }}"
+                        <button id="like-button-{{ $title }}-{{ $song->id }}"
                             class="mt-4 text-white hover:text-red-500 focus:outline-none"
-                            onclick="toggleLike({{ $song->id }})">
+                            onclick="toggleLike('{{ $title }}', {{ $song->id }})">
                             <div class="flex items-center">
-                                <svg id="like-icon-{{ $song->id }}" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    class="w-6 h-6">
+                                <svg id="like-icon-{{ $title }}-{{ $song->id }}"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="{{ $song->likes->contains(Auth::user()->id) ? 'currentColor' : 'none' }}"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                                 </svg>
@@ -45,14 +45,11 @@
                             </div>
                         </button>
                     </div>
-                @empty
-                    <p class="text-white">Nenhuma música disponível</p>
-                @endforelse
+                @endforeach
             </div>
 
-            <!-- Navigation Buttons -->
             <div class="absolute left-0 transform -translate-y-1/2 top-1/2">
-                <button id="prevBtn"
+                <button id="prevBtn-{{ $title }}"
                     class="p-2 text-white bg-gray-700 rounded-full hover:bg-gray-800 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2" class="w-6 h-6">
@@ -61,7 +58,7 @@
                 </button>
             </div>
             <div class="absolute right-0 transform -translate-y-1/2 top-1/2">
-                <button id="nextBtn"
+                <button id="nextBtn-{{ $title }}"
                     class="p-2 text-white bg-gray-700 rounded-full hover:bg-gray-800 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2" class="w-6 h-6">
@@ -69,74 +66,83 @@
                     </svg>
                 </button>
             </div>
-
-            <!-- View More Button -->
-            @if ($songs->hasMorePages())
-                <div class="flex justify-end mt-4">
-                    <button wire:click="loadMore"
-                        class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
-                        Ver Mais
-                    </button>
-                </div>
-            @endif
         </div>
     </div>
-
     <script>
-        const carousel = document.getElementById('song-carousel');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+        function initializeCarousel(title) {
+            const carousel = document.getElementById(`song-carousel-${title}`);
+            const prevBtn = document.getElementById(`prevBtn-${title}`);
+            const nextBtn = document.getElementById(`nextBtn-${title}`);
 
-        prevBtn.addEventListener('click', () => {
-            carousel.scrollBy({
-                left: -carousel.offsetWidth,
-                behavior: 'smooth'
+            if (!carousel || !prevBtn || !nextBtn) {
+                console.error(`Carousel or buttons not found for title: ${title}`);
+                return;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: -carousel.offsetWidth * 0.8, // Scroll by 80% of the carousel width
+                    behavior: 'smooth'
+                });
             });
-        });
 
-        nextBtn.addEventListener('click', () => {
-            carousel.scrollBy({
-                left: carousel.offsetWidth,
-                behavior: 'smooth'
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: carousel.offsetWidth * 0.8, // Scroll by 80% of the carousel width
+                    behavior: 'smooth'
+                });
             });
-        });
+        }
 
-        function toggleLike(songId) {
-            const icon = document.getElementById(`like-icon-${songId}`);
+        function toggleLike(title, songId) {
+            const icon = document.getElementById(`like-icon-${title}-${songId}`);
+            if (!icon) {
+                console.error(`Icon with id "like-icon-${title}-${songId}" not found`);
+                return;
+            }
             const isLiked = icon.getAttribute('fill') === 'currentColor';
             icon.setAttribute('fill', isLiked ? 'none' : 'currentColor');
             Livewire.dispatch('song::liked', {
-                songId
+                songId: songId
             });
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousels = document.querySelectorAll('.relative.flex.overflow-hidden.snap-x.snap-mandatory');
+            carousels.forEach(carousel => {
+                const title = carousel.id.split('-').pop();
+                initializeCarousel(title);
+            });
+        });
     </script>
 
     <style>
         /* Carousel container styling */
-        #song-carousel {
+        .relative.flex.overflow-hidden.snap-x.snap-mandatory {
             scroll-behavior: smooth;
             overflow-x: auto;
             display: flex;
             scrollbar-width: none;
         }
 
-        #song-carousel::-webkit-scrollbar {
+        .relative.flex.overflow-hidden.snap-x.snap-mandatory::-webkit-scrollbar {
             display: none;
         }
 
         /* Navigation button styling */
-        #prevBtn,
-        #nextBtn {
+        #prevBtn-{{ $title }},
+        #nextBtn-{{ $title }} {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            z-index: 10;
         }
 
-        #prevBtn {
+        #prevBtn-{{ $title }} {
             left: 10px;
         }
 
-        #nextBtn {
+        #nextBtn-{{ $title }} {
             right: 10px;
         }
     </style>
