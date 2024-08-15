@@ -33,7 +33,7 @@ class Show extends Component
     #[On('re-render::admin::song::view')]
     public function resetPage()
     {
-        redirect()->route('song-index');
+        redirect()->route('admin-song-index');
     }
 
     public function getSong()

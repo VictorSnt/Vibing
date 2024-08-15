@@ -22,29 +22,7 @@ class Carrousel extends Component
         $this->title = $title;
     }
 
-    #[On('song::liked')]
-    public function liked($songId)
-    {
-        $userId = Auth::user()->id;
-
-        $like = Like::where('song_id', $songId)
-            ->where('user_id', $userId)
-            ->first();
-
-        if ($like) {
-      
-            $like->delete();
-        } else {
-
-            Like::create([
-                'song_id' => $songId,
-                'user_id' => $userId
-            ]);
-        }
-
-        $this->dispatch('re-render::song::carrousel');
-    }
-
+    #[On('like::completed')]
     #[On('re-render::song::carrousel')]
     public function render()
     {

@@ -14,35 +14,26 @@
                                 <img src="{{ asset('storage/' . $song->artist->image) }}"
                                     class="object-cover w-24 h-24 rounded-full">
                             @else
-                                <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11.5a3.5 3.5 0 10-7 0 3.5 3.5 0 007 0zM12 14.5a5.5 5.5 0 00-5.5 5.5h11A5.5 5.5 0 0012 14.5z">
-                                    </path>
-                                </svg>
+                                <x-user-icon-svg />
                             @endif
                             <div class="ml-4">
                                 <h3 class="text-xl font-semibold">{{ $song->title }}</h3>
-                                <p class="text-sm">Artista: {{ $song->artist->name }}</p>
+                                <a href="{{ route('artist-song-index', ['artistId' => $song->artist->id]) }}">
+                                    <p class="text-sm transition-colors duration-300 hover:text-white hover:underline">
+                                        Artista: {{ $song->artist->name }}
+                                    </p>
+                                </a>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-300">Álbum: {{ $song->album->name }}</p>
+                        <a href="{{ route('album-song-index', ['albumId' => $song->album->id]) }}"
+                            class="block text-sm text-gray-300 transition-colors duration-300 hover:text-white hover:underline">
+                            <p class="m-0">Álbum: {{ $song->album->name }}</p>
+                        </a>
+
                         <p class="text-sm text-gray-300">Duração: {{ number_format($song->duration / 60, 2) }} minutos
                         </p>
 
-                        <button id="like-button-{{ $title }}-{{ $song->id }}"
-                            class="mt-4 text-red-500 hover:text-red-500 focus:outline-none {{ $song->likes->where('user_id', Auth::user()->id)->count() ? 'underline' : '' }}"
-                            onclick="toggleLike('{{ $title }}', {{ $song->id }})">
-                            <div class="flex items-center">
-                                <svg id="like-icon-{{ $title }}-{{ $song->id }}"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="{{ $song->likes->where('user_id', Auth::user()->id)->count() ? 'currentColor' : 'none' }}"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                                </svg>
-                            </div>
-                        </button>
+                        <x-song.like-button title="{{ $title }}" songId="{{ $song->id }}" />
 
                     </div>
                 @endforeach
@@ -79,31 +70,28 @@
                 return;
             }
 
+            function calculateScrollOffset() {
+                const carouselItem = document.getElementById(`song-carousel-${title}`);
+                const carouselItemWidth = carouselItem.offsetWidth;
+                const carouselWidth = carousel.offsetWidth;
+
+                const itemsVisible = Math.floor(carouselWidth / carouselItemWidth);
+
+                return carouselItemWidth * itemsVisible;
+            }
+
             prevBtn.addEventListener('click', () => {
                 carousel.scrollBy({
-                    left: -carousel.offsetWidth * 0.8, // Scroll by 80% of the carousel width
+                    left: -calculateScrollOffset(),
                     behavior: 'smooth'
                 });
             });
 
             nextBtn.addEventListener('click', () => {
                 carousel.scrollBy({
-                    left: carousel.offsetWidth * 0.8, // Scroll by 80% of the carousel width
+                    left: calculateScrollOffset(),
                     behavior: 'smooth'
                 });
-            });
-        }
-
-        function toggleLike(title, songId) {
-            const icon = document.getElementById(`like-icon-${title}-${songId}`);
-            if (!icon) {
-                console.error(`Icon with id "like-icon-${title}-${songId}" not found`);
-                return;
-            }
-            const isLiked = icon.getAttribute('fill') === 'currentColor';
-            icon.setAttribute('fill', isLiked ? 'none' : 'currentColor');
-            Livewire.dispatch('song::liked', {
-                songId: songId
             });
         }
 

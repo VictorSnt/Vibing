@@ -23,7 +23,7 @@
                             <x-nav-link wire:navigate href="{{ route('album-index') }}" :active="request()->routeIs('playlist-index')">
                                 Album
                             </x-nav-link>
-                            <x-nav-link wire:navigate href="{{ route('song-index') }}" :active="request()->routeIs('music-index')">
+                            <x-nav-link wire:navigate href="{{ route('admin-song-index') }}" :active="request()->routeIs('music-index')">
                                 Musicas
                             </x-nav-link>
                         </div>

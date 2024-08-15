@@ -43,12 +43,7 @@
                                                     <img src="{{ asset('storage/' . $artist->image) }}"
                                                         alt="Artist Image" class="object-cover w-12 h-12 rounded-full">
                                                 @else
-                                                    <svg class="w-12 h-12 text-gray-500 rounded-full" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M15 11.5a3.5 3.5 0 10-7 0 3.5 3.5 0 007 0zM12 14.5a5.5 5.5 0 00-5.5 5.5h11A5.5 5.5 0 0012 14.5z" />
-                                                    </svg>
+                                                    <x-user-icon-svg />
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 text-gray-900 whitespace-nowrap">
