@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans w-full min-h-[100vh] bg-slate-100">
+<body style="margin: 0; padding: 0;">
     @php
         \Carbon\Carbon::setLocale(config('app.locale'));
     @endphp
@@ -36,7 +36,7 @@
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="{{ $bgcolor ?? '' }}">
             <div wire:loading>
                 <x-load-animation />
             </div>

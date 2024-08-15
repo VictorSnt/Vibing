@@ -1,9 +1,9 @@
 <div>
-    <div class="justify-around">
-        <h1 class="text-4xl font-semibold text-white-900 dark:text-white">{{ $title }}</h1>
+    <div class="justify-around ml-4">
+        <h1 class="text-4xl font-semibold text-white dark:text-white">{{ $title }}</h1>
     </div>
     <div class="flex items-center justify-center p-4">
-        <div class="relative w-full max-w-screen-2xl">
+        <div class="relative w-full max-w-full">
             <div class="relative flex overflow-hidden snap-x snap-mandatory" id="song-carousel-{{ $title }}">
                 @foreach ($songs as $song)
                     <div wire:key="song-{{ $title }}-{{ $song->id }}"
@@ -31,19 +31,19 @@
                         </p>
 
                         <button id="like-button-{{ $title }}-{{ $song->id }}"
-                            class="mt-4 text-white hover:text-red-500 focus:outline-none"
+                            class="mt-4 text-red-500 hover:text-red-500 focus:outline-none {{ $song->likes->where('user_id', Auth::user()->id)->count() ? 'underline' : '' }}"
                             onclick="toggleLike('{{ $title }}', {{ $song->id }})">
                             <div class="flex items-center">
                                 <svg id="like-icon-{{ $title }}-{{ $song->id }}"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="{{ $song->likes->contains(Auth::user()->id) ? 'currentColor' : 'none' }}"
+                                    fill="{{ $song->likes->where('user_id', Auth::user()->id)->count() ? 'currentColor' : 'none' }}"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                                 </svg>
-                                <span class="ml-2">{{ $song->likes->count() }}</span>
                             </div>
                         </button>
+
                     </div>
                 @endforeach
             </div>
