@@ -19,5 +19,10 @@
         </div>  
     </div>
 
+    <x-modal.primary title="Adicionar a Playlist" modalId="add::to::playlist">
+        <div>
+            Opa papai
+        </div>
+    </x-modal.primary>
     <livewire:like.update />
 </x-layout.app>

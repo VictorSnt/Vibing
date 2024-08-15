@@ -33,7 +33,15 @@
                         <p class="text-sm text-gray-300">Duração: {{ number_format($song->duration / 60, 2) }} minutos
                         </p>
 
-                        <x-song.like-button title="{{ $title }}" songId="{{ $song->id }}" />
+                        <div class="flex items-center m-0">
+                            <!-- Botão de Curtir -->
+                            <x-song.like-button title="{{ $title }}" songId="{{ $song->id }}" />
+                        
+                            <!-- Botão de Adicionar à Playlist -->
+                            <x-song.addplaylist-button songId="{{ $song->id }}"/>
+                        </div>
+                        
+
 
                     </div>
                 @endforeach

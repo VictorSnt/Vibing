@@ -42,8 +42,9 @@
                             <div class="mt-1 text-sm text-gray-500">
                                 {{ number_format($foundedSong->duration / 60, 2) }} Minutos
                             </div>
+                            <div class="text-lg font-semibold text-white">Album: {{ $foundedSong->album->name }}</div>
                         </div>
-
+ 
                         <!-- Botão de curtir -->
                         <div class="ml-4">
                             <x-song.like-button title="{{ $foundedSong->title }}" songId="{{ $foundedSong->id }}" />
