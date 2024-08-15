@@ -3,7 +3,7 @@
         <label for="playlist-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div class="relative w-1/2 m-auto">
             <div class="mb-6">
-                <input type="text" wire:model.live.debounce.500ms="search" placeholder="Pesquisar músicas..."
+                <input type="text" wire:model.live.debounce.500ms="search" placeholder="Pesquisar playlists..."
                     class="w-full px-4 py-2 text-white bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     @if (isset($song))
                     placeholder="Pesquisar playlist para {{ $song->title }}" 
@@ -45,7 +45,7 @@
                                                 focus:ring-4 focus:outline-none focus:ring-purple-300 
                                                 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 
                                                 py-2.5 text-center me-2 mb-2">                                            
-                                            Musicas
+                                            Ver Musicas
                                         </a>
                                     </div>   
                                 </td> 

@@ -3,6 +3,7 @@
 namespace App\Livewire\Playlist;
 
 use App\Models\Playlist;
+use App\Models\Song;
 use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -51,6 +52,28 @@ class Delete extends Component
                 'icon' => "error",
                 'title' => __('local.Error'),
                 'text' => __('local.RegistrationFailed')
+            ]);
+        }
+    }
+
+    #[On('playlist::remove::song')]
+    public function removeSong($playlistId, $songId)
+    {
+        try {
+            DB::transaction(function () use ($playlistId, $songId) {
+                // $song = Song::findOrFail($songId);
+                // $song->playlist_id = null;
+                // $song->save();
+                $playlist = Playlist::findOrFail($playlistId);
+                $playlist->songs()->detach($songId);
+            });
+            $this->success(msg: 'Removida!');
+        } catch (\Exception $e) {
+            report($e);
+            $this->alert([
+                'icon' => "error",
+                'title' => __('local.Error'),
+                'text' => __($e->getMessage())
             ]);
         }
     }

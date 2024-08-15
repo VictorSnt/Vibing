@@ -14,7 +14,8 @@ class VibingController extends Controller
     {
   
         if ($albumId) {
-            $songs = Song::where('album_id', $albumId)->get();
+            $idColumn = 'album_id';
+            $idValue = $albumId;
             $title = 'Listagem de Musicas Do Album: ' . Album::find($albumId)->name ?? '';
         
         } else {
@@ -22,7 +23,8 @@ class VibingController extends Controller
         }
 
         return view('pages.vibing.songs', [
-            'songs' => $songs,
+            'idColumn' => $idColumn,
+            'idValue' => $idValue,
             'title' => $title
         ]);
     }
@@ -30,14 +32,16 @@ class VibingController extends Controller
     public function showArtistSongs(Request $request, $artistId = null)
     {
         if ($artistId) {
-            $songs = Song::where('artist_id', $artistId)->get();
+            $idColumn = 'artist_id';
+            $idValue = $artistId;
             $title = 'Listagem de Musicas Do Cantor: ' . Artist::find($artistId)->name ?? '';
 
         } else {
             redirect()->back();
         }
         return view('pages.vibing.songs', [
-            'songs' => $songs,
+            'idColumn' => $idColumn,
+            'idValue' => $idValue,
             'title' => $title
         ]);
     }
@@ -45,15 +49,16 @@ class VibingController extends Controller
     public function showPlaylistSongs(Request $request, $playlistId = null)
     {
         if ($playlistId) {
-            $playlist = Playlist::find($playlistId);
-            $songs = $playlist ? $playlist->songs : [];
-            $title = 'Listagem de Musicas Da Playlist: ' . $playlist->name ?? '';
+            $idColumn = 'playlist_id';
+            $idValue = $playlistId;
+            $title = 'Listagem de Musicas Da Playlist: ' . Playlist::find($playlistId)->name ?? '';
 
         } else {
             redirect()->back();
         }
         return view('pages.vibing.songs', [
-            'songs' => $songs,
+            'idColumn' => $idColumn,
+            'idValue' => $idValue,
             'title' => $title
         ]);
     }

@@ -2,22 +2,39 @@
 
 namespace App\Livewire\Song;
 
+use App\Models\Playlist;
 use App\Models\Song;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Search extends Component
 {
-    public $search = '';
+    use WithPagination;
+
     public $title = '';
-    public $songs = null;
+    public $search = '';
+    public $idValue = null;
+    public $idColumn = null;
 
     public function render()
     {
-      
-        $searchedSongs = $this->search === '' ? [] : Song::search($this->search)->get();
+        if ($this->idValue && $this->idColumn) {
+            if ($this->idColumn === 'playlist_id') {
+                $playlist = Playlist::find($this->idValue);
+                $searchedSongs = $playlist->songs()
+                    ->search($this->search)
+                    ->paginate(10);
+            } else {
+                $searchedSongs = Song::where($this->idColumn, $this->idValue)
+                    ->search($this->search)
+                    ->paginate(10);
+            }
+        } else {
+            $searchedSongs = Song::search($this->search)->paginate(10);
+        }
 
         return view('livewire.song.search', [
-            'searchedSongs' => $searchedSongs === [] && $this->songs ? $this->songs : $searchedSongs,
+            'searchedSongs' => $searchedSongs,
         ]);
     }
 }

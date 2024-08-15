@@ -39,11 +39,23 @@
                             <div class="text-lg font-semibold text-white">Album: {{ $foundedSong->album->name }}</div>
                         </div>
 
-                        <!-- Botão de curtir -->
-                        <div class="ml-4">
-                            <x-song.like-button title="{{ $foundedSong->title }}" songId="{{ $foundedSong->id }}" />
-                            <x-song.addplaylist-button songId="{{ $foundedSong->id }}" />
-                        </div>
+                        <!-- interaction inputs -->
+                        @if (isset($idColumn) && $idColumn == 'playlist_id')
+                            <button
+                                x-on:click="$dispatch(
+                                    'playlist::remove::song', { playlistId: '{{ $idValue }}', 
+                                    songId: '{{ $foundedSong->id }}' 
+                                })"
+                                type="button"
+                                class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                Remover
+                            </button>
+                        @else
+                            <div class="ml-4">
+                                <x-song.like-button title="{{ $foundedSong->title }}" songId="{{ $foundedSong->id }}" />
+                                <x-song.addplaylist-button songId="{{ $foundedSong->id }}" />
+                            </div>
+                        @endif
                     </div>
                 </div>
             @empty
@@ -51,6 +63,9 @@
                     <span class="text-gray-400">Nenhuma música encontrada para "{{ $search }}"</span>
                 @endif
             @endforelse
+            @if (!is_array($searchedSongs) && method_exists($searchedSongs, 'links'))
+                {{ $searchedSongs->links('vendor.pagination.app-pagination') }}
+            @endif
         </div>
     </div>
 </div>
