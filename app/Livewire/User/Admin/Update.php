@@ -16,17 +16,6 @@ class Update extends Component
     use NotificationTrait;
 
     
-    protected function verifyAuthorization(): void
-    {
-        if (!Auth::user() || !Auth::user()->is_admin) {
-            $this->alert([
-                'icon' => 'error',
-                'title' => 'Voçe não tem autorização para mudar permissões'
-            ]);
-            return;
-        }
-    }
-
     public function success($msg)
     {
         $this->notify([
@@ -51,11 +40,12 @@ class Update extends Component
     {
         if (!$userId) return;
         try {
-            $this->verifyAuthorization();
             $is_admin = DB::transaction(function () use ($userId) {
                 $user = User::findOrFail($userId);
                 $user->is_admin = !$user->is_admin;
+
                 $user->save();
+                
                 return $user->is_admin;
             });
             $this->success(

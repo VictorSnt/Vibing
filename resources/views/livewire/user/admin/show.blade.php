@@ -35,12 +35,14 @@
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
                                 Cadstrado em
                             </th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Mudar permissões
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                                Desativar
-                            </th>
+                            @if (Auth::user()->is_superuser)
+                                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
+                                    Mudar permissões
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
+                                    Desativar
+                                </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -59,15 +61,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ $user->created_at->translatedFormat('d \d\e F \d\e Y') }}</td>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-user.admin-toggle-button userId="{{ $user->id }}"
-                                        is_admin="{{ $user->is_admin }}" />
-                                </td>
+                                @if (Auth::user()->is_superuser)
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <x-user.admin-toggle-button userId="{{ $user->id }}"
+                                            is_admin="{{ $user->is_admin }}" />
+                                    </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <x-user.delete-user-button userId="{{ $user->id }}" />
-                                </td>
-
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <x-user.delete-user-button userId="{{ $user->id }}" />
+                                    </td>
+                                @endif
                             </tr>
                             @empty
                                 <tr>

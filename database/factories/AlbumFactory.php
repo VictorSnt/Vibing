@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Artist;
 
 /**
@@ -19,8 +18,8 @@ class AlbumFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word . ' Album', // Gera um nome fictício para o álbum
-            'artist_id' => Artist::factory(), // Cria um novo artista e usa o ID desse artista
+            'name' => $this->faker->word . ' Album', 
+            'artist_id' => Artist::factory(),
         ];
     }
 }

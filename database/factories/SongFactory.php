@@ -19,10 +19,10 @@ class SongFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence, // Gera um título fictício para a música
-            'artist_id' => Artist::factory(), // Cria um novo artista e usa o ID desse artista
-            'album_id' => Album::factory(),   // Cria um novo álbum e usa o ID desse álbum
-            'duration' => $this->faker->numberBetween(60, 360), // Gera uma duração fictícia em segundos (entre 1 e 6 minutos)
+            'title' => $this->faker->word,
+            'artist_id' => Artist::factory(),
+            'album_id' => Album::factory(), 
+            'duration' => $this->faker->numberBetween(60, 360), 
         ];
     }
 }

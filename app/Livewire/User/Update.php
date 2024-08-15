@@ -15,22 +15,14 @@ use App\Models\User;
 class Update extends Component
 {
     use NotificationTrait;
-    
+
     public UpdateForm $updateForm;
     public $user;
-    
+
 
     public function mount()
     {
         $this->user = Auth::user();
-        $this->updateForm->name = $this->user->name;
-    }
-
-    #[On('open-modal')]
-    public function setUserData($updateUserId = null)
-    {
-        if (!$updateUserId) return; 
-        $this->user = User::findOrFail($updateUserId);
         $this->updateForm->name = $this->user->name;
     }
 
@@ -46,7 +38,6 @@ class Update extends Component
             return;
         }
         $this->dispatch('user::updated');
-
     }
 
     public function fail($msg)
@@ -56,6 +47,44 @@ class Update extends Component
             'title' => __('Erro'),
             'text' => $msg
         ]);
+    }
+
+    protected function verifyAuthorization(): bool
+    {
+        
+        $authorized = true;
+        $unauthorized = false;
+        
+        if (!isset($this->user)) return $unauthorized;
+
+        $currentUser = Auth::user();
+        $userToEdit = $this->user;
+
+        $usersExist = (bool)$currentUser && $userToEdit;
+        $currentUserIsAdmin = (bool)$currentUser->is_admin;
+        $currentUserIsSuperuser = (bool)$currentUser->is_superuser;
+        $userToEditIsNotAdmin = (bool)!$userToEdit->is_superuser || !$userToEdit->is_admin;
+        $editingSelf = (bool)$currentUser->id === $userToEdit->id;
+
+        if ($editingSelf) return $authorized;
+        if ($currentUserIsSuperuser) return $authorized;
+        if ($usersExist && $currentUserIsAdmin && $userToEditIsNotAdmin) {
+            return $authorized;
+        }
+        return $unauthorized;
+    }
+
+
+    #[On('open-modal')]
+    public function setUserData($updateUserId = null)
+    {
+        if (!$updateUserId) return;
+        $this->user = User::findOrFail($updateUserId);
+        if (!$this->verifyAuthorization()) {
+            $this->fail(msg: 'Você não tem autorização para editar esse usuario');
+            $this->dispatch('close-modal');
+        }
+        $this->updateForm->name = $this->user->name;
     }
 
     public function confirm_update()
@@ -72,7 +101,7 @@ class Update extends Component
      * on a confirm_{methodName} that trigger a confirmation
      * dialog modal to the user
      */
-    
+
     #[On('update::user::confirmed')]
     public function update()
     {
