@@ -28,6 +28,7 @@
                         <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ number_format($song->duration / 60, 2) }} Minutos</td>
                         <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
                             <x-song.like-button title="{{$song->title}}" songId="{{ $song->id }}" />
+                            <x-song.addplaylist-button songId="{{ $song->id }}"/>
                         </td>
                     </tr>
                 @empty

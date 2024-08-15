@@ -2,7 +2,7 @@
 
 <div x-data="{ 
     handleConfirm(event) {
-        console.log('Evento recebido:', event.detail.artistId);
+         
 
         // Mostra o alerta de confirmação
         Swal.fire({

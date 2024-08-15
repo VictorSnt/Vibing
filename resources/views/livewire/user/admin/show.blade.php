@@ -92,9 +92,6 @@
                     <!-- Modal -->
                     <livewire:user.admin.delete />
                     <livewire:user.admin.update />
-                    <x-modal.primary title="Editar permissões" modalId="update::artist::modal">
-
-                    </x-modal.primary>
                 </div>
 
             </div>

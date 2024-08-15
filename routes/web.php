@@ -57,6 +57,12 @@ Route::middleware('auth')->group(function () {
         [VibingController::class, 'showArtistSongs']
     )->name('artist-song-index');
 
+    Route::get(
+        '/dashboard-playlist-songs/{playlistId?}',
+        [VibingController::class, 'showPlaylistSongs']
+    )->name('playlist-song-index');
+    
+
     Route::view(uri: '/dashboard-musicas', view: 'pages.vibing.songs')->name('song-index');
 
     Route::view(uri: '/dashboard-playlists', view: 'pages.vibing.playlists')->name('playlist-index');
