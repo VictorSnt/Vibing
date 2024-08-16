@@ -17,7 +17,7 @@ class Carrousel extends Component
     public $songs;
     public $title;
 
-    public function mount($title, $songs)
+    public function mount($title)
     {
        
         $this->title = $title;

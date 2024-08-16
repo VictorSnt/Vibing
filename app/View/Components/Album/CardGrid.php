@@ -11,7 +11,7 @@ class CardGrid extends Component
 {
     public function getAlbuns()
     {
-        $albums = Album::inRandomOrder()
+        return Album::inRandomOrder()
             ->limit(4)
             ->get();
     }

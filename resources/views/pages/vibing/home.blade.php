@@ -15,7 +15,7 @@
     <!-- Carousel Section -->
     <div class="carousels-container">
         <div class="carousel-wrapper">
-            <livewire:song.carrousel  title="Sugestões de Musicas" :songs="$songs" />
+            <livewire:song.carrousel  title="Sugestões de Musicas" />
         </div>  
     </div>
 
