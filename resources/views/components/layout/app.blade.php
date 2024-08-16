@@ -36,7 +36,7 @@
         @endif
 
         <!-- Page Content -->
-        <main class="{{ $bgcolor ?? '' }}">
+        <main class="{{ $bgcolor ?? 'bg-gray-900' }}">
             <div wire:loading>
                 <x-load-animation />
             </div>

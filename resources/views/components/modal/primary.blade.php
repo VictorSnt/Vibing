@@ -41,7 +41,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="flex items-center justify-center flex-1 overflow-auto bg-white shadow-lg">
+            <div class="flex items-center justify-center flex-1 overflow-auto bg-gray-100 shadow-lg">
                 {{ $slot }}
             </div>
             <!-- Modal footer -->

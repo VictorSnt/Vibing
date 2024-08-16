@@ -1,5 +1,5 @@
 <div class="p-4">
-    <main class="w-full p-6 overflow-auto border shadow-xl border-l-stone-900">
+    <main class="w-full p-6 overflow-auto bg-white border shadow-xl">
         <div class="flex flex-col w-full h-full mt-8 rounded-lg">
             <label for="playlist-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative mb-6">

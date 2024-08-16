@@ -1,5 +1,5 @@
 <main class="w-full min-h-[90vh] align-middle overflow-hidden">
-    <div class="object-center w-1/2 m-auto rounded-lg h-[80vh] mt-8">
+    <div class="object-center w-3/4 m-auto rounded-lg h-[80vh] mt-8">
         <label for="playlist-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div class="relative w-1/2 m-auto">
             <div class="mb-6">
