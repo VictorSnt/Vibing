@@ -21,47 +21,52 @@ git  clone  git@github.com:VictorSnt/Vibing.git
 
 cd  Vibing
 
-composer  install
-
 cp  .env.example  .env
+
+```
+
+### 2. Ajuste o seu arquivo .env
+
+com suas variáveis de ambiente altere o .env
+
+e a imagem docker se necessario
+
+e depois rode os seguintes comandos 
+
+```bash
+docker-compose up -d --build
+
+docker-compose exec <your app> bash
+
+composer  install
 
 php  artisan  key:generate
 
 php  artisan  migrate  --seed
 
-php  artisan  migrate  --seed
-
 npm  run  dev
-
-php  artisan  serve
-
-  
 
 ```
 
-  
-
-O seed adicona os usuarios abaixo
-
-  
+### Aplicação Pronta
 
 Usuário comum:
 
-Email: user@user.com
+- Email: user@user.com
 
-Senha: user##
+- Senha: user##
 
 Administrador:
 
-Email: admin@admin.com
+- Email: admin@admin.com
 
-Senha: admin#
+- Senha: admin#
 
 Superusuário:
 
-Email: superuser@superuser.com
+ -Email: superuser@superuser.com
 
-Senha: superuser
+ -Senha: superuser
 
   
 
