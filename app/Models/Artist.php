@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Exceptions\ArtistHasAlbumsException;
-use App\Exceptions\ArtistHasSongsException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
-class Artist extends BaseModel
+class Artist extends Model
 {
     use HasFactory;
 

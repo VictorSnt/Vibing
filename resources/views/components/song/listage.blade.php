@@ -20,7 +20,7 @@
                         <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $song->artist->name }}</td>
                         <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                             @if ($song->artist->image)
-                                <img src="{{ asset('storage/' . $song->artist->image) }}" alt="Imagem do Artista" class="object-cover w-12 h-12 rounded-full">
+                            <x-artist.icon :link="$song->artist->image" />
                             @else
                                 <x-user-icon-svg />
                             @endif

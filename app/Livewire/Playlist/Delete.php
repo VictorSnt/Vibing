@@ -5,6 +5,7 @@ namespace App\Livewire\Playlist;
 use App\Models\Playlist;
 use App\Models\Song;
 use App\Traits\NotificationTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -18,6 +19,15 @@ class Delete extends Component
     {
         $this->alert([
             'icon' => 'success',
+            'title' => $msg,
+        ]);
+        $this->dispatch('re-render::playlist::view');
+    }
+
+    public function fail($msg)
+    {
+        $this->alert([
+            'icon' => 'error',
             'title' => $msg,
         ]);
         $this->dispatch('re-render::playlist::view');
@@ -42,7 +52,8 @@ class Delete extends Component
     {
         try {
             DB::transaction(function () use ($playlistId) {
-                $playlist = Playlist::findOrFail($playlistId);
+                $playlist = Playlist::where('user_id', Auth::user()->id)
+                ->where('id', $playlistId);
                 $playlist->delete();
             });
             $this->success(msg: 'Playlist Deletada!');
@@ -61,13 +72,18 @@ class Delete extends Component
     {
         try {
             DB::transaction(function () use ($playlistId, $songId) {
-                // $song = Song::findOrFail($songId);
-                // $song->playlist_id = null;
-                // $song->save();
-                $playlist = Playlist::findOrFail($playlistId);
-                $playlist->songs()->detach($songId);
+                $playlist = Playlist::where('user_id', Auth::user()->id)
+                    ->where('id', $playlistId)
+                    ->first();
+                if ($playlist) {
+                    $playlist->songs()->detach($songId);   
+                    $this->success(msg: 'Removida!');
+                    return;
+                }
+                $this->fail(msg: 'Essa Musica não esta na playlist');
             });
-            $this->success(msg: 'Removida!');
+
+            
         } catch (\Exception $e) {
             report($e);
             $this->alert([

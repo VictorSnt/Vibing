@@ -22,8 +22,7 @@
             @if ($currentImagePath)
                 <div class="flex items-center space-x-4">
                     <div>
-                        <img src="{{ asset('storage/' . $currentImagePath) }}" alt="Artist Image"
-                            class="object-cover w-16 h-16 rounded-xl">
+                        <x-artist.icon :link="$currentImagePath" />
                     </div>
                     <div class="flex-shrink-0">
                         <button wire:click="confirm_removeImage" type="button"

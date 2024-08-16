@@ -37,7 +37,6 @@ class Update extends Component
         if ($songId) {
             try {
                 $this->song = Song::findOrFail($songId);
-                $this->title = $this->song->title;
                 $this->duration = $this->song->duration;
 
             } catch (Exception $e) {

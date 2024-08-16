@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User\Admin;
 
+use App\Exceptions\UserHasInteractionsException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use App\Traits\NotificationTrait;
@@ -55,9 +56,12 @@ class Delete extends Component
             $this->success(msg: 'Usuario Deletado!');
         } catch (ValidationException $e) {
             throw $e;
+        } catch (UserHasInteractionsException $e) {
+            report($e);
+            $this->fail(msg: $e->getMessage());
         } catch (\Exception $e) {
             report($e);
-            $this->fail(msg: __('Falha ao deletar Usera'));
+            $this->fail(msg: __('Falha ao deletar usuario'));
         }
     }
     

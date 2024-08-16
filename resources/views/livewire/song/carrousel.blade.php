@@ -6,13 +6,13 @@
         <div class="relative w-full max-w-full">
             <div class="relative flex overflow-hidden snap-x snap-mandatory" id="song-carousel-{{ $title }}">
                 @foreach ($songs as $song)
+                    
                     <div wire:key="song-{{ $title }}-{{ $song->id }}"
-                        class="flex-shrink-0 px-6 py-4 mx-4 text-white transition-transform duration-300 ease-in-out transform min-w-[80%] md:min-w-[45%] lg:min-w-[30%] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl snap-start hover:scale-105">
+                        class="carousel-item flex-shrink-0 px-6 py-4 mx-4 text-white transition-transform duration-300 ease-in-out transform min-w-[80%] md:min-w-[45%] lg:min-w-[30%] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl snap-start hover:scale-105">
                         <div class="flex items-center mb-4">
-                            <!-- Image and Song Details -->
+                            
                             @if ($song->artist->image)
-                                <img src="{{ asset('storage/' . $song->artist->image) }}"
-                                    class="object-cover w-24 h-24 rounded-full">
+                                <x-artist.icon :link="$song->artist->image" />
                             @else
                                 <x-user-icon-svg />
                             @endif
@@ -36,13 +36,10 @@
                         <div class="flex items-center m-0">
                             <!-- Botão de Curtir -->
                             <x-song.like-button title="{{ $title }}" songId="{{ $song->id }}" />
-                        
+
                             <!-- Botão de Adicionar à Playlist -->
-                            <x-song.addplaylist-button songId="{{ $song->id }}"/>
+                            <x-song.addplaylist-button songId="{{ $song->id }}" />
                         </div>
-                        
-
-
                     </div>
                 @endforeach
             </div>
@@ -79,27 +76,49 @@
             }
 
             function calculateScrollOffset() {
-                const carouselItem = document.getElementById(`song-carousel-${title}`);
+                const carouselItem = carousel.querySelector('.carousel-item');
+                if (!carouselItem) return 0;
+
                 const carouselItemWidth = carouselItem.offsetWidth;
                 const carouselWidth = carousel.offsetWidth;
-
                 const itemsVisible = Math.floor(carouselWidth / carouselItemWidth);
-
                 return carouselItemWidth * itemsVisible;
             }
 
+            let isScrolling = false;
+
+            function smoothScrollBy(distance) {
+                if (isScrolling) return;
+
+                isScrolling = true;
+
+                const start = carousel.scrollLeft;
+                const end = start + distance;
+                const duration = 500; 
+                let startTime = null;
+
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    const easing = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
+                    carousel.scrollLeft = start + (end - start) * easing;
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        isScrolling = false; 
+                    }
+                }
+
+                window.requestAnimationFrame(step);
+            }
+
             prevBtn.addEventListener('click', () => {
-                carousel.scrollBy({
-                    left: -calculateScrollOffset(),
-                    behavior: 'smooth'
-                });
+                smoothScrollBy(-calculateScrollOffset());
             });
 
             nextBtn.addEventListener('click', () => {
-                carousel.scrollBy({
-                    left: calculateScrollOffset(),
-                    behavior: 'smooth'
-                });
+                smoothScrollBy(calculateScrollOffset());
             });
         }
 

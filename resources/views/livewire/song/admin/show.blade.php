@@ -49,8 +49,7 @@
                                     <div class="flex items-center">
                                         <span class="mr-2">{{ $song->artist->name }}</span>
                                         @if ($song->artist->image)
-                                            <img src="{{ asset('storage/' . $song->artist->image) }}"
-                                                class="object-cover w-10 h-10 rounded-xl">
+                                            <x-artist.icon :link="$song->artist->image" />
                                         @endif
                                     </div>
                                 </td>

@@ -9,8 +9,7 @@
                         <h2 class="mb-2 text-xl font-bold">{{ $album->name }}</h2>
                         <div class="flex items-center space-x-4">
                             @if ($album->artist->image)
-                                <img src="{{ asset('storage/' . $album->artist->image) }}"
-                                    class="object-cover w-24 h-24 rounded-full">
+                            <x-artist.icon :link="$album->artist->image" />
                             @else
                                 <x-user-icon-svg />
                             @endif
@@ -34,8 +33,7 @@
                         <h2 class="mb-2 text-xl font-bold">{{ $album->name }}</h2>
                         <div class="flex items-center space-x-4">
                             @if ($album->artist->image)
-                                <img src="{{ asset('storage/' . $album->artist->image) }}"
-                                    class="object-cover w-24 h-24 rounded-full">
+                                <x-artist.icon :link="$album->artist->image" />
                             @else
                                 <x-user-icon-svg />
                             @endif

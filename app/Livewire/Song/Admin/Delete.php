@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Song\Admin;
 
-
+use App\Exceptions\SongHasInteractionsException;
 use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -51,6 +51,10 @@ class Delete extends Component
                 $song->delete();
             });
             $this->success(msg: 'Musica Deletada!');
+        } catch (SongHasInteractionsException $e) {
+            report($e);
+            $this->fail(msg: $e->getMessage());
+
         } catch (\Exception $e) {
             report($e);
             $this->fail(msg: __('Falha ao deletar Musica'));

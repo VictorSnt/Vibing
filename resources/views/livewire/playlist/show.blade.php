@@ -25,6 +25,9 @@
                                 Playlist
                             </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
+                                Editar
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
                                 Musicas
                             </th>
                             <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
@@ -36,6 +39,16 @@
                         @forelse ($playlists as $playlist)
                             <tr wire:key="{{ $playlist->id . $playlist->created_at }}">
                                 <td class="px-6 py-4 font-medium whitespace-nowrap">{{ $playlist->name }}</td>
+                                
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex justify-center">
+                                        <button
+                                        x-on:click="$dispatch('open-modal', {modalId: 'update::user::playlist', updatePlaylistId: '{{ $playlist->id }}' })"
+                                        class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-slate-600 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-800">
+                                        Editar Playlist
+                                    </button>
+                                    </div>
+                                </td>
                                 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex justify-center">

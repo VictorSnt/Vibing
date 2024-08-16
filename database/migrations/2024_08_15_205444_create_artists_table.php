@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateArtistsTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('artists', function (Blueprint $table) {
@@ -13,10 +18,15 @@ class CreateArtistsTable extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes(); // Adiciona a coluna de soft delete
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('artists');

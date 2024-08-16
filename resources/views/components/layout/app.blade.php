@@ -23,7 +23,7 @@
     <x-notify />
     <x-banner />
 
-    <div class="bg-gray-100 dark:bg-gray-900">
+    <div>
         @livewire('navigation-menu')
 
         <!-- Page Heading -->

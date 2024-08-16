@@ -23,8 +23,7 @@
                     <div class="flex items-center">
                         <!-- Imagem do artista -->
                         @if ($foundedSong->artist->image)
-                            <img src="{{ asset('storage/' . $foundedSong->artist->image) }}" alt="Imagem do Artista"
-                                class="object-cover w-12 h-12 mr-4 rounded-full">
+                            <x-artist.icon :link="$foundedSong->artist->image" />
                         @else
                             <x-user-icon-svg class="w-12 h-12 mr-4 rounded-full" />
                         @endif

@@ -20,27 +20,8 @@
                 </label>
                 <input type="text" id="Songname" wire:model="title"
                     class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Digite o título da música" />
+                    placeholder="{{ $song->title }}" />
                 @error('title')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Campo Gênero -->
-            <div>
-                <label for="Songgenre" class="block text-sm font-medium text-gray-700">
-                    Gênero Musical
-                </label>
-                <select id="Songgenre" wire:model="genre"
-                    class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <option value="">Selecione um gênero</option>
-                    <option value="Pop">Pop</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Sertanejo">Sertanejo</option>
-                    <option value="Samba">Samba</option>
-                    <!-- Adicione mais opções conforme necessário -->
-                </select>
-                @error('genre')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

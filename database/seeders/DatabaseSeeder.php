@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(1)->create();
-        Song::factory()->count(25)->create();
+        $this->call([
+            AppTableSeeder::class,
+        ]);
     }
 }

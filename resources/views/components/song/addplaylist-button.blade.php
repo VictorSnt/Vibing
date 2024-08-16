@@ -1,6 +1,6 @@
 @props(['songId'])
 
-<button x-on:click="$dispatch('open-modal', {modalId: 'add::to::playlist', songId: '{{ $songId }}' })"
+<button x-on:click="$dispatch('open-modal', {modalId: 'add::to::playlist', playlistAddSongId: '{{ $songId }}' })"
     id="{{ $songId }}" class="mt-2 text-white hover:text-gray-900 focus:outline-none">
     <div class="flex items-center justify-center w-6 h-6">
         <svg id="add-icon-{{ $songId }}" xmlns="http://www.w3.org/2000/svg" fill="none"

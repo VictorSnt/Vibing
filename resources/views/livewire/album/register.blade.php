@@ -40,8 +40,7 @@
                                         <tr wire:key="{{ $artist->id }}">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 @if ($artist->image)
-                                                    <img src="{{ asset('storage/' . $artist->image) }}"
-                                                        alt="Artist Image" class="object-cover w-12 h-12 rounded-full">
+                                                <x-artist.icon :link="$artist->image" />
                                                 @else
                                                     <x-user-icon-svg />
                                                 @endif

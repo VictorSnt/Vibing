@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Exceptions\UserHasInteractionsException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -70,11 +72,11 @@ class User extends Authenticatable
     {
         static::deleting(function ($user) {
             if ($user->playlists()->exists()) {
-                throw new \Exception("Cannot delete user with associated playlists.");
+                throw new UserHasInteractionsException;
             }
             
             if ($user->likedSongs()->exists()) {
-                throw new \Exception("Cannot delete user with associated liked songs.");
+                throw new UserHasInteractionsException;
             }
         });
     }
