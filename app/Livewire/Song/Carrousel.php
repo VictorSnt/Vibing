@@ -3,6 +3,7 @@
 namespace App\Livewire\Song;
 
 use App\Models\Like;
+use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\NotificationTrait;
 use Livewire\Attributes\On;
@@ -18,8 +19,11 @@ class Carrousel extends Component
 
     public function mount($title, $songs)
     {
-        $this->songs = $songs;
+       
         $this->title = $title;
+        $this->songs = Song::inRandomOrder()
+            ->limit(10)
+            ->get();
     }
 
     #[On('like::completed')]

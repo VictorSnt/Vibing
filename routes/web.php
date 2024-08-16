@@ -40,11 +40,7 @@ Route::middleware('auth')->group(function () {
         }
     )->name('logout');
 
-    Route::view('/', 'pages.vibing.home', [
-        'songs' => Song::inRandomOrder()
-            ->limit(10)
-            ->get()
-    ])->name('vibing-index');
+    Route::view('/', 'pages.vibing.home')->name('vibing-index');
 
 
     Route::get(

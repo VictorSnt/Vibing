@@ -9,14 +9,19 @@ use Illuminate\View\Component;
 
 class CardGrid extends Component
 {
-    
-    public function render(): View|Closure|string
+    public function getAlbuns()
     {
         $albums = Album::inRandomOrder()
             ->limit(4)
             ->get();
+    }
+
+    public function render(): View|Closure|string
+    {
+        $data = $this->getAlbuns();
+        
         return view('components.album.card-grid', [
-            'albums' => $albums
+            'albums' => $data ? $data : []
         ]);
     }
 }
