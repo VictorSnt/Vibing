@@ -33,7 +33,8 @@ class Show extends Component
             return Artist::search($this->search)->paginate(3);
         } else {
             
-            return Artist::orderByRaw('GREATEST(updated_at, created_at) DESC')->paginate(3);
+            return Artist::orderByRaw('GREATEST(updated_at, created_at) DESC')
+            ->paginate(3);
         }
     }
 

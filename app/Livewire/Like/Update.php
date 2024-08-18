@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Like;
 
-use App\Models\Like;
 use App\Models\Song;
 use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -19,7 +19,9 @@ class Update extends Component
         if (Song::find($songId)) {
             /** @var User $user */
             $user = Auth::user();
-            $user->likedSongs()->toggle($songId);
+            DB::transaction(function () use ($user, $songId) {
+                $user->likedSongs()->toggle($songId);
+            });
             return;
         }
 

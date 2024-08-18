@@ -53,6 +53,6 @@ class Album extends Model
             $q->where('albums.name', 'like', "%{$searchTerm}%")
                 ->orWhere('artists.name', 'like', "%{$searchTerm}%");
         })
-        ->select('albums.*');;
+        ->select('albums.*');
     }
 }
