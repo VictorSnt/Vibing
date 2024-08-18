@@ -28,7 +28,6 @@ class PasswordResetForm extends Form
     public function passwordReset()
     {
         $fields = $this->validate();
-        $this->reset();
         return (Password::reset(
             $fields,
             function ($user) {
