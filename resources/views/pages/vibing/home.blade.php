@@ -13,7 +13,7 @@
     </div>
 
     <!-- Carousel Section -->
-    <div class="carousels-container">
+    <div class="carousels-container bg-gray-900">
         <div class="carousel-wrapper">
             <livewire:song.carrousel  title="Sugestões de Musicas" />
         </div>  
