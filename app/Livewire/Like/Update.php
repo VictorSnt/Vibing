@@ -19,7 +19,6 @@ class Update extends Component
             ->first();
 
         if ($like) {
-      
             $like->delete();
         } else {
 
