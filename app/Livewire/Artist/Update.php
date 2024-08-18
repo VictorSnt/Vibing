@@ -25,7 +25,6 @@ class Update extends Component
         return [
             'name' => 'nullable|max:25',
             'image' => 'nullable|file|mimes:png,jpg',
-
         ];
     }
 

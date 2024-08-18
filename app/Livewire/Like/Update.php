@@ -3,32 +3,30 @@
 namespace App\Livewire\Like;
 
 use App\Models\Like;
+use App\Models\Song;
+use App\Traits\NotificationTrait;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Update extends Component
 {
+    use NotificationTrait;
+
     #[On('song::liked')]
     public function liked($songId)
     {
-        $userId = Auth::user()->id;
-
-        $like = Like::where('song_id', $songId)
-            ->where('user_id', $userId)
-            ->first();
-
-        if ($like) {
-            $like->delete();
-        } else {
-
-            Like::create([
-                'song_id' => $songId,
-                'user_id' => $userId
-            ]);
+        if (Song::find($songId)) {
+            /** @var User $user */
+            $user = Auth::user();
+            $user->likedSongs()->toggle($songId);
+            return;
         }
-        $this->dispatch('like::completed');
 
+        $this->alert([
+            'icon' => 'error',
+            'title' => 'Erro ao registrar like'
+        ]);
     }
 
     public function render()

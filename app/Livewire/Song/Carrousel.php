@@ -26,7 +26,6 @@ class Carrousel extends Component
             ->get();
     }
 
-    #[On('like::completed')]
     #[On('re-render::song::carrousel')]
     public function render()
     {

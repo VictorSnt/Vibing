@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\CustomResetPassword;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
 
@@ -63,7 +64,7 @@ class User extends Authenticatable
         return $this->hasMany(Playlist::class);
     }
 
-    public function likedSongs()
+    public function likedSongs(): BelongsToMany
     {
         return $this->belongsToMany(Song::class, 'likes')->withTimestamps();
     }

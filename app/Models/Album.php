@@ -48,8 +48,11 @@ class Album extends Model
      */
     public function scopeSearch(Builder $query, $searchTerm)
     {
-        return $query->where(function ($q) use ($searchTerm) {
-            $q->where('name', 'like', "%{$searchTerm}%");
-        });
+        return $query->join('artists', 'albums.artist_id', '=', 'artists.id')
+        ->where(function ($q) use ($searchTerm) {
+            $q->where('albums.name', 'like', "%{$searchTerm}%")
+                ->orWhere('artists.name', 'like', "%{$searchTerm}%");
+        })
+        ->select('albums.*');;
     }
 }
