@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
-                    <x-nav-link href="{{ route('vibing-index') }}" wire:navigate>
+                    <x-nav-link>
                         <x-logo.application-mark class="block w-auto h-9" />
                     </x-nav-link>
                 </div>

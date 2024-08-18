@@ -1,6 +1,6 @@
 <div class="inline-flex items-center">
     
-    <a @if (Auth::user() && (Auth::user()->is_admin || Auth::user()->is_superuser)) href="{{route('listusers-index')}}"  @else href="{{route('vibing-index')}}"  @endif  class="inline-flex items-center note-item"">
+    <a @if (Auth::user() && (Auth::user()->is_admin || Auth::user()->is_superuser)) href="{{route('listusers-index')}}"  @else href="{{route('vibing-index')}}"  @endif  class="inline-flex items-center note-item" wire:navigate>
         <div class="inline-flex items-center">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 <span class="text-blue-500">Vibing</span>
