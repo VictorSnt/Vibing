@@ -47,6 +47,12 @@ class VibingController extends Controller
             $idColumn = 'artist_id';
             $idValue = $artistId;
             $title = 'Listagem de Musicas Do Cantor: ' . $artist->name;
+
+            $this->notify([
+                'icon' => 'success',
+                'title' => 'Musicas de ' . $artist->name
+            ], true);
+
             return view('pages.vibing.songs', [
                 'idColumn' => $idColumn,
                 'idValue' => $idValue,
@@ -69,6 +75,12 @@ class VibingController extends Controller
             $idColumn = 'playlist_id';
             $idValue = $playlistId;
             $title = 'Listagem de Musicas Da Playlist: ' . $playlist->name;
+
+            $this->notify([
+                'icon' => 'success',
+                'title' => 'Musicas da playlist ' . $playlist->name
+            ], true);
+
             return view('pages.vibing.songs', [
                 'idColumn' => $idColumn,
                 'idValue' => $idValue,

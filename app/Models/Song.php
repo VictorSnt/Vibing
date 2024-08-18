@@ -15,8 +15,8 @@ class Song extends Model
     protected $fillable = ['title', 'artist_id', 'album_id', 'duration'];
 
     protected $casts = ['duration' => 'integer',];
-    
-    
+
+
     public function artist()
     {
         return $this->belongsTo(Artist::class);
@@ -35,7 +35,10 @@ class Song extends Model
     public function playlists()
     {
         return $this->belongsToMany(
-            Playlist::class, 'playlist_song', 'song_id', 'playlist_id'
+            Playlist::class,
+            'playlist_song',
+            'song_id',
+            'playlist_id'
         )->withTimestamps();
     }
 
@@ -45,7 +48,7 @@ class Song extends Model
             if ($song->playlists()->exists()) {
                 throw new SongHasInteractionsException;
             }
-            
+
             if ($song->likes()->exists()) {
                 throw new SongHasInteractionsException;
             }
@@ -54,8 +57,13 @@ class Song extends Model
 
     public function scopeSearch(Builder $query, $searchTerm)
     {
-        return $query->where(function ($q) use ($searchTerm) {
-            $q->where('title', 'like', "%{$searchTerm}%");
-        });
+        return $query->join('albums', 'songs.album_id', '=', 'albums.id')
+                    ->join('artists', 'songs.artist_id', '=', 'artists.id')
+            ->where(function ($q) use ($searchTerm) {
+                $q->where('songs.title', 'like', "%{$searchTerm}%")
+                    ->orWhere('albums.name', 'like', "%{$searchTerm}%")
+                    ->orWhere('artists.name', 'like', "%{$searchTerm}%");
+            })
+            ->select('songs.*');
     }
 }
